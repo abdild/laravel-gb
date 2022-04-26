@@ -22,7 +22,7 @@ Route::get('/', function () {
 });
 
 
-// Lesson 1
+// Lesson 1 Готово к проверке.
 // Страница приветствия пользователей
 Route::get('/hello', function() {
     return 'Hello page!';
