@@ -16,4 +16,7 @@
     </div>
     <br>
 
-<?php endforeach; ?>
+<?php
+// };
+endforeach;
+?>
