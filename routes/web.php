@@ -3,6 +3,9 @@
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\NewsController;
 
+use App\Http\Controllers\Admin\CategoryController as AdminCategoryController;
+use App\Http\Controllers\Admin\IndexController as AdminController;
+use App\Http\Controllers\Admin\NewsController as AdminNewsController;
 /*
 |--------------------------------------------------------------------------
 | Web Routes
@@ -88,8 +91,8 @@ Route::get('/news/categories', [NewsController::class, 'categoriesNews'])
 // параметр, который будет определять какие именно новости будут выведены. Новости
 // получать из метода созданного в первом задании.
 Route::get('/news/categories/{id}', [NewsController::class, 'getNewsFromCategories'])
-->where('id', '\d+')
-->name('news.from.category');
+    ->where('id', '\d+')
+    ->name('news.from.category');
 
 // Урок 2.
 // Задание 2.
@@ -112,4 +115,16 @@ Route::get('/auth', function () {
 // 3. Поле для краткого описания новости
 Route::get('news/add', function () {
     return view('news/add');
+});
+
+
+// Группировка роутов для админской панели
+// 'prefix' => 'admin' - добавляет префикс 'admin' в браузерной строке
+// 'as' => 'admin.' - добавляет для данной группировки уникальность нейминга. Чтобы , например, не путалось с news.show, будет admin.news.show
+// Проверка всех имен: 'php artisan route:list'
+Route::group(['prefix' => 'admin', 'as' => 'admin.'], function () {
+    Route::get('/', AdminController::class)
+    ->name('index');
+    Route::resource('/categories', AdminCategoryController::class);
+    Route::resource('/news', AdminNewsController::class);
 });

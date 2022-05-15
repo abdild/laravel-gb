@@ -241,6 +241,11 @@ class Controller extends BaseController
         //         'category' => $faker->text(15)
         //     ];
         // }
+
+        if($category > 4) {
+            abort(404);
+        };
+
         if ($category != null) {
             $selectedNews = [];
             $news_all = $this->getNews();
