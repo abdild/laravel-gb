@@ -1,11 +1,11 @@
 <?php
 
-namespace App\Http\Controllers\Admin;
+namespace App\Http\Controllers;
 
-use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Storage;
 
-class NewsController extends Controller
+class Order extends Controller
 {
     /**
      * Display a listing of the resource.
@@ -14,7 +14,7 @@ class NewsController extends Controller
      */
     public function index()
     {
-        return view('admin.news.index');
+        return view('order');
     }
 
     /**
@@ -24,8 +24,7 @@ class NewsController extends Controller
      */
     public function create()
     {
-        // dd(request()->ip());
-        return view('admin.news.create');
+        //
     }
 
     /**
@@ -36,19 +35,19 @@ class NewsController extends Controller
      */
     public function store(Request $request)
     {
-        $request->validate(
-            [
-                'title' => ['required', 'string']
-                ]
-        );
+        $request->validate([
+            'name' => 'required',
+            'email' => 'required',
+            'text' => 'required',
+        ]);
 
-        // if($request->ajax()) {
-        //     //
-        // }
-        
-        // dd($request->all());
+        $name = $request->input('name');
+        $email = $request->input('email');
+        $order = $request->input('text');
 
-        return response()->json($request->only(['title', 'author', 'status', 'description']), 201);
+        $line = 'Order from '. $name . '. Email:  '. $email . '. Text: '. $order;
+
+        Storage::put('orders.txt', $line);
     }
 
     /**

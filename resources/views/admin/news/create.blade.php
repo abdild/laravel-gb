@@ -9,17 +9,40 @@
         </div>
     </div>
 
-    <form action="" method="">
-        <label for="name">Название новости</label>
-        <input type="text" name="name" id="name">
+    @if ($errors->any())
+        @foreach ($errors->all() as $error)
+            <x-alert type="danger" :message="$error"></x-alert>
+        @endforeach
+    @endif
+
+    <form method="post" action="{{ route('admin.news.store') }}">
+        @csrf
+
+        <div class="form-group">
+            <label for="title">Наименование</label>
+            <input type="text" id="title" name="title" class="form-control" value="{{ old('title') }}">
+        </div>
+        <div class="form-group">
+            <label for="author">Автор</label>
+            <input type="text" id="author" name="author" class="form-control" value="{{ old('author') }}">
+        </div>
+        <div class="form-group">
+            <label for="status">Статус</label>
+            <select class="form-control" name="status" id="status">
+                <option @if (old('status') === 'DRAFT') selected @endif>DRAFT</option>
+                <option @if (old('status') === 'ACTIVE') selected @endif>ACTIVE</option>
+                <option @if (old('status') === 'BLOCKED') selected @endif>BLOCKED</option>
+            </select>
+        </div>
+        <div class="form-group">
+            <label for="image">Изображение</label>
+            <input type="file" id="image" name="image" class="form-control">
+        </div>
+        <div class="form-group">
+            <label for="description">Описание</label>
+            <textarea class="form-control" name="description" id="description">{!! old('description') !!}</textarea>
+        </div>
         <br>
-        <label for="long_description">Текст новости</label>
-        <textarea type="text" name="long_description" id="long_description" rows="10">
-        </textarea>
-        <br>
-        <label for="short_description">Краткое описание</label>
-        <input type="text" name="short_description" id="short_description">
-        <br>
-        <button type="submit">Добавить новость</button>
+        <button type="submit" class="btn btn-success">Сохранить</button>
     </form>
 @endsection

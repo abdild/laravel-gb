@@ -6,6 +6,10 @@ use App\Http\Controllers\NewsController;
 use App\Http\Controllers\Admin\CategoryController as AdminCategoryController;
 use App\Http\Controllers\Admin\IndexController as AdminController;
 use App\Http\Controllers\Admin\NewsController as AdminNewsController;
+use App\Http\Controllers\Feedback;
+use App\Http\Controllers\IndexController as IndexController;
+use App\Http\Controllers\Order;
+
 /*
 |--------------------------------------------------------------------------
 | Web Routes
@@ -21,9 +25,6 @@ use App\Http\Controllers\Admin\NewsController as AdminNewsController;
 $text = 'Hello! This is my first Laravel project.';
 $title = 'Main page';
 
-Route::get('/', function () {
-    return view('welcome');
-});
 
 
 // Урок 1 Готово к проверке.
@@ -124,7 +125,19 @@ Route::get('news/add', function () {
 // Проверка всех имен: 'php artisan route:list'
 Route::group(['prefix' => 'admin', 'as' => 'admin.'], function () {
     Route::get('/', AdminController::class)
-    ->name('index');
+        ->name('index');
     Route::resource('/categories', AdminCategoryController::class);
     Route::resource('/news', AdminNewsController::class);
 });
+
+Route::get('/', IndexController::class)
+    ->name('index');
+
+// Урок 4.
+// Задание 1.
+// Создать формы для получения данных от пользователя
+// Route::get('/feedback', [IndexController::class, 'feedback'])
+//     ->name('feedback'); НЕПРАВИЛЬНО!
+
+Route::resource('/feedback', Feedback::class);
+Route::resource('/order', Order::class);

@@ -1,11 +1,11 @@
 <?php
 
-namespace App\Http\Controllers\Admin;
+namespace App\Http\Controllers;
 
-use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Storage;
 
-class NewsController extends Controller
+class Feedback extends Controller
 {
     /**
      * Display a listing of the resource.
@@ -14,7 +14,7 @@ class NewsController extends Controller
      */
     public function index()
     {
-        return view('admin.news.index');
+        return view('feedback');
     }
 
     /**
@@ -24,8 +24,7 @@ class NewsController extends Controller
      */
     public function create()
     {
-        // dd(request()->ip());
-        return view('admin.news.create');
+        //
     }
 
     /**
@@ -36,19 +35,18 @@ class NewsController extends Controller
      */
     public function store(Request $request)
     {
-        $request->validate(
-            [
-                'title' => ['required', 'string']
-                ]
-        );
+        // dd($request);
+        $request->validate([
+            'name' => 'required',
+            'text' => 'required',
+        ]);
 
-        // if($request->ajax()) {
-        //     //
-        // }
-        
-        // dd($request->all());
+        $name = $request->input('name');
+        $feedback = $request->input('text');
 
-        return response()->json($request->only(['title', 'author', 'status', 'description']), 201);
+        $line = 'Feedback from '. $name . ' ' . 'Text: '. $feedback;
+
+        Storage::put('feedbacks.txt', $line);
     }
 
     /**
