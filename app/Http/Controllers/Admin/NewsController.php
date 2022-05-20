@@ -14,7 +14,7 @@ class NewsController extends Controller
      */
     public function index()
     {
-        //
+        return view('admin.news.index');
     }
 
     /**
@@ -24,7 +24,8 @@ class NewsController extends Controller
      */
     public function create()
     {
-        //
+        // dd(request()->ip());
+        return view('admin.news.create');
     }
 
     /**
@@ -35,7 +36,19 @@ class NewsController extends Controller
      */
     public function store(Request $request)
     {
-        //
+        $request->validate(
+            [
+                'title' => ['required', 'string']
+                ]
+        );
+
+        // if($request->ajax()) {
+        //     //
+        // }
+        
+        // dd($request->all());
+
+        return response()->json($request->only(['title', 'author', 'status', 'description']), 201);
     }
 
     /**
