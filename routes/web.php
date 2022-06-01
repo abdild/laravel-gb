@@ -61,12 +61,7 @@ Route::get('/test', function () use ($text, $title) {
 php;
 });
 
-// Урок 2
-Route::get('/news', [NewsController::class, 'index'])
-    ->name('news');
-Route::get('/news/{id}', [NewsController::class, 'show'])
-    ->where('id', '\d+')
-    ->name('news.show');
+
 
 
 // Урок 2.
@@ -141,3 +136,10 @@ Route::get('/', IndexController::class)
 
 Route::resource('/feedback', Feedback::class);
 Route::resource('/order', Order::class);
+
+// Урок 2
+Route::get('/news', [NewsController::class, 'index'])
+    ->name('news');
+Route::get('/news/{id}', [NewsController::class, 'show'])
+    ->where('id', '\d+')
+    ->name('news.show');

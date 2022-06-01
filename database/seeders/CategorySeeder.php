@@ -17,17 +17,16 @@ class CategorySeeder extends Seeder
     public function run()
     {
         DB::table('categories')->insert($this->getData());
-        
     }
 
-    public function getData() {
+    public function getData()
+    {
 
         $data = [];
 
         $faker = Factory::create();
 
-        for ($i = 0; $i < 10; $i++)
-        {
+        for ($i = 0; $i < 10; $i++) {
             $data[] = [
                 'title' => $faker->jobTitle(),
                 'description' => $faker->text(100)
