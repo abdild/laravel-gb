@@ -1,12 +1,11 @@
 <?php
 
-namespace App\Http\Controllers\Admin;
+namespace App\Http\Controllers;
 
-use App\Http\Controllers\Controller;
-use App\Models\Category;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Storage;
 
-class CategoryController extends Controller
+class Order extends Controller
 {
     /**
      * Display a listing of the resource.
@@ -15,14 +14,7 @@ class CategoryController extends Controller
      */
     public function index()
     {
-        $model = app(Category::class);
-        $categories = $model->getCategories();
-        // dd($categories); // Проверка того, что приходит по категориям
-        // dd($model->getCategory(15)); // Проверка того, что приходит в категории
-        // dd($model->getCategoryWithParams(5));
-        return view('admin.categories.index', [
-            'categories' => $categories
-        ]);
+        return view('order');
     }
 
     /**
@@ -32,7 +24,7 @@ class CategoryController extends Controller
      */
     public function create()
     {
-        return view('admin.categories.create');
+        //
     }
 
     /**
@@ -43,7 +35,19 @@ class CategoryController extends Controller
      */
     public function store(Request $request)
     {
-        //
+        $request->validate([
+            'name' => 'required',
+            'email' => 'required',
+            'text' => 'required',
+        ]);
+
+        $name = $request->input('name');
+        $email = $request->input('email');
+        $order = $request->input('text');
+
+        $line = 'Order from '. $name . '. Email:  '. $email . '. Text: '. $order;
+
+        Storage::put('orders.txt', $line);
     }
 
     /**
