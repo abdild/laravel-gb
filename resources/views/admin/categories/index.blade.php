@@ -14,6 +14,9 @@
     </div>
 
     <div class="table-responsive">
+
+        @include('inc.messages')
+
         <table class="table table-striped table-sm">
             <thead>
                 <tr>
@@ -60,5 +63,8 @@
                 @endforelse
             </tbody>
         </table>
+
+        {{ $categories->links() }}
+
     </div>
 @endsection

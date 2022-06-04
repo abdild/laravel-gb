@@ -9,11 +9,7 @@
         </div>
     </div>
 
-    @if ($errors->any())
-        @foreach ($errors->all() as $error)
-            <x-alert type="danger" :message="$error"></x-alert>
-        @endforeach
-    @endif
+    @include('inc.messages')
 
     <form method="post" action="{{ route('admin.news.store') }}">
         @csrf
@@ -25,6 +21,27 @@
         <div class="form-group">
             <label for="author">Автор</label>
             <input type="text" id="author" name="author" class="form-control" value="{{ old('author') }}">
+        </div>
+        <div class="form-group">
+            <label for="categories_id">Категория</label>
+            <select class="form-control" name="categories_id" id="categories_id">
+                @foreach ($categories as $category)
+                    <option value="{{ $category->id }}">
+                        @if ($category->id === old('categories_id'))
+                            selected
+                        @endif
+                        {{ $category->title }}
+                    </option>
+                @endforeach
+            </select>
+        </div>
+        <div class="form-group">
+            <label for="slug">Slug</label>
+            <select class="form-control" name="slug" id="slug">
+                <option @if (old('slug') === 1) selected @endif>1</option>
+                <option @if (old('slug') === 2) selected @endif>2</option>
+                <option @if (old('slug') === 3) selected @endif>3</option>
+            </select>
         </div>
         <div class="form-group">
             <label for="status">Статус</label>
