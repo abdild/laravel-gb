@@ -6,6 +6,7 @@ namespace App\Models;
 use Illuminate\Database\Eloquent\Model;
 // use Illuminate\Database\Eloquent\Relations\HasMany;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
+use Illuminate\Database\Eloquent\Relations\HasMany;
 
 class Category extends Model
 {
@@ -82,4 +83,10 @@ class Category extends Model
     protected $fillable = ['title', 'description']; // Перечисляются поля, которым запись разрешена. Лучше его использовать
 
     // protected $guarded = ['description']; // Перечисляются поля, которым запись запрещена. Нужен тогда, когда много полей.
+
+    // Создание связи с таблицей news базы данных. Название во множественном числе, т.к. связь одна-ко-многим (одна категория ко многим новостям)
+    public function news(): HasMany
+    {
+        return $this->hasMany(News::class, 'categories_id', 'id');
+    }
 }

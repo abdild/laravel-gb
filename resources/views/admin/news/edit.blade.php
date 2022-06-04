@@ -28,10 +28,7 @@
             <label for="categories_id">Категория</label>
             <select class="form-control" name="categories_id" id="categories_id">
                 @foreach ($categories as $category)
-                    <option value="{{ $category->id }}">
-                        @if ($category->id === $news->categories_id)
-                            selected
-                        @endif
+                    <option value="{{ $category->id }}" @if ($category->id === $news->categories_id) selected @endif>
                         {{ $category->title }}
                     </option>
                 @endforeach

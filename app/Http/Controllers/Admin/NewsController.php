@@ -118,9 +118,14 @@ class NewsController extends Controller
      */
     public function update(Request $request, News $news)
     {
-        $validated = $request->only(['title', 'author', 'categories_id', 'slug', 'image', 'status', 'description']);
+        // $validated = $request->only(['title', 'author', 'categories_id', 'slug', 'image', 'status', 'description']);
 
-        $news = $news->fill($validated); // Так удобно использовать при одной записи в БД и она становится объектом.
+        // $news = $news->fill($validated); // Так удобно использовать при одной записи в БД и она становится объектом.
+
+        $validated = $request->except(['_token', 'image']);
+        $validated['slug'] = \Str::slug($validated['title']);
+
+        $news = $news->fill($validated);
 
         if ($news->save()) {
             return redirect()->route('admin.news.index')

@@ -21,7 +21,8 @@ class QueryBuilderNews implements QueryBuilder
         // return News::select(['id', 'categories_id', 'title', 'slug', 'author', 'image', 'status', 'description', 'only_admin', 'created_at', 'updated_at'])
         //     // ->get();
         //     ->paginate(10); // Для пагинации
-        return News::paginate(5);
+        return News::with('category') // category - это имя связи
+            ->paginate(5);
     }
 
     public function getNewsById(int $id)

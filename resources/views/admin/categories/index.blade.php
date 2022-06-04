@@ -32,7 +32,7 @@
                 @forelse ($categories as $category)
                     <tr>
                         <td>{{ $category->id }}</td>
-                        <td>{{ $category->title }}</td>
+                        <td>{{ $category->title }} ({{ $category->news_count }})</td>
                         <td>{{ $category->description }}</td>
                         <td>{{ $category->created_at }}</td>
                         <td>{{ $category->updated_at }}</td>

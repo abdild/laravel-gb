@@ -35,7 +35,7 @@
                 @forelse ($news as $item)
                     <tr>
                         <td>{{ $item->id }}</td>
-                        <td>{{ $item->categories_id }}</td>
+                        <td>{{ $item->category->title }}</td>
                         <td>{{ $item->title }}</td>
                         <td>{{ $item->author }}</td>
                         <td>{{ $item->status }}</td>
@@ -43,7 +43,7 @@
                         <td>{{ $item->created_at }}</td>
                         <td>{{ $item->updated_at }}</td>
                         <td>
-                            <a href="{{ route('admin.news.edit', ['news' => $item->id]) }}">
+                            <a href="{{ route('admin.news.edit', ['news' => $item]) }}">
                                 <svg width="24" height="24" viewBox="0 0 24 24" fill="none"
                                     xmlns="http://www.w3.org/2000/svg">
                                     <path

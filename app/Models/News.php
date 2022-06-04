@@ -5,6 +5,7 @@ namespace App\Models;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
+use Illuminate\Database\Eloquent\Relations\BelongsTo;
 
 class News extends Model
 {
@@ -29,7 +30,19 @@ class News extends Model
 
     // public $timestamps = false; // Чтобы время записи и перезаписи не обновлялись
 
-    protected $fillable = ['title', 'author', 'categories_id', 'slug', 'image', 'status', 'description']; // Перечисляются поля, которым запись разрешена. Лучше его использовать
+    protected $fillable = ['title', 'author', 'categories_id', 'slug', 'image', 'status', 'description', 'only_admin']; // Перечисляются поля, которым запись разрешена. Лучше его использовать
+
 
     // protected $guarded = ['id']; // Перечисляются поля, которым запись запрещена. Нужен тогда, когда много полей.
+
+
+    protected $casts = [
+        'only_admin' => 'boolean'
+    ]; // Будет проебразовывать при выборке данных в этот тип данных
+
+    // Создание обратной связи с таблицей categories базы данных. Название в единственном числе, т.к. возвращается только одна категория у новости.
+    public function category(): BelongsTo
+    {
+        return $this->belongsTo(Category::class, 'categories_id', 'id');
+    }
 }

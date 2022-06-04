@@ -20,6 +20,7 @@ class QueryBuilderCategories implements QueryBuilder
     public function getCategories(): LengthAwarePaginator // Нужно поменять возвращаемое значение, чтобы была пагинация
     {
         return Category::select(['id', 'title', 'description', 'created_at', 'updated_at'])
+            ->withCount('news') // news - это имя связи
             // ->get();
             ->paginate(10); // Для пагинации
     }
