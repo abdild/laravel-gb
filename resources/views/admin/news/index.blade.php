@@ -40,8 +40,16 @@
                         <td>{{ $item->author }}</td>
                         <td>{{ $item->status }}</td>
                         <td>{{ $item->description }}</td>
-                        <td>{{ $item->created_at }}</td>
-                        <td>{{ $item->updated_at }}</td>
+                        <td>
+                            @if ($item->created_at)
+                                {{ $item->created_at->format('d.m.Y H:i') }}
+                            @endif
+                        </td>
+                        <td>
+                            @if ($item->updated_at)
+                                {{ $item->updated_at->format('d.m.Y H:i') }}
+                            @endif
+                        </td>
                         <td>
                             <a href="{{ route('admin.news.edit', ['news' => $item]) }}">
                                 <svg width="24" height="24" viewBox="0 0 24 24" fill="none"
@@ -51,7 +59,7 @@
                                         stroke="#EAB308" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" />
                                 </svg>
                             </a>
-                            <a href="javascript:;">
+                            <a href="javascript:;" class="delete" rel="{{ $item->id }}">
                                 <svg width="24" height="24" viewBox="0 0 24 24" fill="none"
                                     xmlns="http://www.w3.org/2000/svg">
                                     <path
@@ -73,3 +81,34 @@
 
     </div>
 @endsection
+
+
+
+@push('js')
+    <script type="text/javascript">
+        document.addEventListener("DOMContentLoaded", function() {
+            const el = document.querySelectorAll(".delete");
+            el.forEach(function(value, key) {
+                value.addEventListener('click', function() {
+                    const id = this.getAttribute('rel');
+                    if (confirm(`Подтвердите удаление записи с #ID ${id} ?`)) {
+                        send('/admin/news/' + id).then(() => {
+                            location.reload();
+                        });
+                    }
+                });
+            });
+        });
+        async function send(url) {
+            let response = await fetch(url, {
+                method: 'DELETE',
+                headers: {
+                    'X-CSRF-TOKEN': document.querySelector('meta[name="csrf-token"]')
+                        .getAttribute('content')
+                }
+            });
+            let result = await response.json();
+            return result.ok;
+        }
+    </script>
+@endpush

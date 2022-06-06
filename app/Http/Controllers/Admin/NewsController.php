@@ -4,9 +4,12 @@ namespace App\Http\Controllers\Admin;
 
 use App\Models\News;
 use App\Models\Category;
+use Illuminate\Support\Str;
 use Illuminate\Http\Request;
 use App\Queries\QueryBuilderNews;
+use Illuminate\Support\Facades\Log;
 use App\Http\Controllers\Controller;
+use App\Http\Requests\UpdateRequest;
 
 class NewsController extends Controller
 {
@@ -78,9 +81,9 @@ class NewsController extends Controller
 
         if ($news->save()) {
             return redirect()->route('admin.news.index')
-                ->with('success', 'Запись успешно добавлена');
+                ->with('success', trans('message.admin.news.create.success'));
         }
-        return back()->with('error', 'Ошибка добавления');
+        return back()->with('error', trans('message.admin.news.create.fail'));
     }
 
     /**
@@ -116,22 +119,28 @@ class NewsController extends Controller
      * @param  int  $news
      * @return \Illuminate\Http\Response
      */
-    public function update(Request $request, News $news)
+    // public function update(Request $request, News $news)
+    public function update(UpdateRequest $request, News $news)
     {
+
         // $validated = $request->only(['title', 'author', 'categories_id', 'slug', 'image', 'status', 'description']);
 
-        // $news = $news->fill($validated); // Так удобно использовать при одной записи в БД и она становится объектом.
+        // $news = $news->Ffill($validated); // Так удобно использовать при одной записи в БД и она становится объектом.
 
-        $validated = $request->except(['_token', 'image']);
+        // $validated = $request->except(['_token', 'image']);
+        $validated = $request->validated(); // Предыдущая строка теперь не нужна, т.к. наши данные валидируются с помощью UpdateRequest
+        // dd($validated);
         $validated['slug'] = \Str::slug($validated['title']);
 
         $news = $news->fill($validated);
 
         if ($news->save()) {
             return redirect()->route('admin.news.index')
-                ->with('success', 'Запись успешно обновлена');
+                // ->with('success', 'Запись успешно обновлена');
+                ->with('success', trans('message.admin.news.update.success')); // Хелпер trans можно заменить __
         }
-        return back()->with('error', 'Ошибка обновления');
+        // return back()->with('error', 'Ошибка обновления');
+        return back()->with('error', __('message.admin.news.update.fail'));
     }
 
     /**
@@ -142,6 +151,13 @@ class NewsController extends Controller
      */
     public function destroy(News $news)
     {
-        //
+        try {
+            $news->delete();
+            return response()->json('ok');
+        } catch (\Exception $e) {
+            \Log::error($e->getMessage());
+
+            return response()->json('error', 400);
+        }
     }
 }

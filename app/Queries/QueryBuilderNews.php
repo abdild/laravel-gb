@@ -21,7 +21,8 @@ class QueryBuilderNews implements QueryBuilder
         // return News::select(['id', 'categories_id', 'title', 'slug', 'author', 'image', 'status', 'description', 'only_admin', 'created_at', 'updated_at'])
         //     // ->get();
         //     ->paginate(10); // Для пагинации
-        return News::with('category') // category - это имя связи
+        return News::with('category') // category - это имя связи.
+            // return News::draft()->with('category') // draft - это scope из урока 7 (см. модель news). draft, active, blocked это соответственно scope от scopeDraft, scopeActive и scopeBlocked
             ->paginate(5);
     }
 

@@ -4,10 +4,13 @@
 <head>
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta name="csrf-token" content="{{ csrf_token() }}">
     <meta name="description" content="">
     <meta name="author" content="Mark Otto, Jacob Thornton, and Bootstrap contributors">
     <meta name="generator" content="Hugo 0.84.0">
-    <title>@section('title') Admin - @show</title>
+    <title>
+        @section('title') Admin - @show
+    </title>
 
     <!-- Bootstrap core CSS -->
     <link href="{{ asset('css/bootstrap.min.css') }}" rel="stylesheet">
@@ -26,6 +29,7 @@
                 font-size: 3.5rem;
             }
         }
+
     </style>
 
     <!-- Custom styles for this template -->
@@ -34,11 +38,11 @@
 
 <body>
 
-   <x-admin.header></x-admin.header>
+    <x-admin.header></x-admin.header>
 
     <div class="container-fluid">
         <div class="row">
-            
+
             <x-admin.sidebar></x-admin.sidebar>
 
             <main class="col-md-9 ms-sm-auto col-lg-10 px-md-4">

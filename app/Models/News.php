@@ -45,4 +45,26 @@ class News extends Model
     {
         return $this->belongsTo(Category::class, 'categories_id', 'id');
     }
+
+    // Урок 7 Scope
+    public function scopeActive($query)
+    {
+        return $query->where('status', 'ACTIVE');
+    }
+
+    public function scopeDraft($query)
+    {
+        return $query->where('status', 'DRAFT');
+    }
+
+    public function scopeBlocked($query)
+    {
+        return $query->where('status', 'BLOCKED');
+    }
+
+    // Создание объекта carbon для работы с датами
+    protected $dates = [
+        'created_at',
+        'updated_at'
+    ];
 }

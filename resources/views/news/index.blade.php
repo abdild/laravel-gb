@@ -11,7 +11,8 @@
         @forelse ($newsList as $news)
             <div class="col">
                 <div class="card shadow-sm">
-                    <img src="https://picsum.photos/id/{{ $news->id }}/100/50" alt="https://picsum.photos/id/{{ $news->id }}/100/50">
+                    <img src="https://picsum.photos/id/{{ $news->id }}/100/50"
+                        alt="https://picsum.photos/id/{{ $news->id }}/100/50">
                     <div class="card-body">
                         <h2>
                             <a href="{{ route('news.show', ['id' => $news->id]) }}">{{ $news->title }}</a>
@@ -26,7 +27,13 @@
                                 <a href="{{ route('news.show', ['id' => $news->id]) }}"
                                     class="btn btn-sm btn-outline-secondary">Подробнее</a>
                             </div>
-                            <small class="text-muted">{{ $news->created_at }}</small>
+                            <small class="text-muted">
+                                @if ($news->created_at)
+                                    {{ $news->created_at }}
+                                @else
+                                    нет даты
+                                @endif
+                            </small>
                         </div>
                     </div>
                 </div>
