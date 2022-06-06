@@ -17,10 +17,16 @@
         <div class="form-group">
             <label for="title">Наименование</label>
             <input type="text" id="title" name="title" class="form-control" value="{{ old('title') }}">
+            @error('title')
+                <strong style="color: red">{{ $message }}</strong>
+            @enderror
         </div>
         <div class="form-group">
             <label for="author">Автор</label>
             <input type="text" id="author" name="author" class="form-control" value="{{ old('author') }}">
+            @error('author')
+                <strong style="color: red">{{ $message }}</strong>
+            @enderror
         </div>
         <div class="form-group">
             <label for="categories_id">Категория</label>

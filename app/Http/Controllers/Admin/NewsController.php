@@ -9,6 +9,7 @@ use Illuminate\Http\Request;
 use App\Queries\QueryBuilderNews;
 use Illuminate\Support\Facades\Log;
 use App\Http\Controllers\Controller;
+use App\Http\Requests\StoreRequest;
 use App\Http\Requests\UpdateRequest;
 
 class NewsController extends Controller
@@ -51,7 +52,7 @@ class NewsController extends Controller
      * @param  \Illuminate\Http\Request  $request
      * @return \Illuminate\Http\Response
      */
-    public function store(Request $request)
+    public function store(StoreRequest $request)
     {
         // $request->validate(
         //     [
@@ -74,7 +75,7 @@ class NewsController extends Controller
         // $news = new News($validated); // Так удобно использовать при одной записи в БД и она становится объектом.
 
 
-        $validated = $request->except(['_token', 'image']);
+        $validated = $request->validated();
         $validated['slug'] = \Str::slug($validated['title']);
 
         $news = News::create($validated);
@@ -84,6 +85,23 @@ class NewsController extends Controller
                 ->with('success', trans('message.admin.news.create.success'));
         }
         return back()->with('error', trans('message.admin.news.create.fail'));
+
+
+
+        // $validated = $request->validated(); // Предыдущая строка теперь не нужна, т.к. наши данные валидируются с помощью CreateNewsRequest
+        // // dd($validated);
+        // $validated['slug'] = \Str::slug($validated['title']);
+
+        // // $news = $news->fill($validated);
+        // $news = News::create($validated);
+
+        // if ($news->save()) {
+        //     return redirect()->route('admin.news.index')
+        //         // ->with('success', 'Запись успешно обновлена');
+        //         ->with('success', trans('message.admin.news.create.success')); // Хелпер trans можно заменить __
+        // }
+        // // return back()->with('error', 'Ошибка обновления');
+        // return back()->with('error', __('message.admin.news.create.fail'));
     }
 
     /**

@@ -2,10 +2,14 @@
 
 namespace App\Http\Controllers\Admin;
 
-use App\Http\Controllers\Controller;
+use App\Models\News;
 use App\Models\Category;
-use App\Queries\QueryBuilderCategories;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Log;
+use App\Http\Controllers\Controller;
+use App\Queries\QueryBuilderCategories;
+use App\Http\Requests\CreateCategoryRequest;
+use App\Http\Requests\UpdateCategoryRequest;
 
 class CategoryController extends Controller
 {
@@ -50,17 +54,29 @@ class CategoryController extends Controller
      * @param  \Illuminate\Http\Request  $request
      * @return \Illuminate\Http\Response
      */
-    public function store(Request $request)
+    public function store(CreateCategoryRequest $request)
     {
-        $validated = $request->only(['title', 'description']);
+        $validated = $request->validated();
         // $category = Category::create($validated); // Так удобно использовать при массовой записи в БД. Возвращает либо объект модели, которая была создана, либо false.
         $category = new Category($validated); // Так удобно использовать при одной записи в БД и она становится объектом.
 
         if ($category->save()) {
             return redirect()->route('admin.categories.index')
-                ->with('success', 'Запись успешно добавлена');
+                ->with('success', __('message.admin.category.create.success'));
         }
-        return back()->with('error', 'Ошибка добавления');
+        return back()->with('error', __('message.admin.category.create.fail'));
+
+
+
+        // $validated = $request->validated();
+
+        // $news = News::create($validated);
+
+        // if ($news->save()) {
+        //     return redirect()->route('admin.news.index')
+        //         ->with('success', trans('message.admin.news.create.success'));
+        // }
+        // return back()->with('error', trans('message.admin.news.create.fail'));
     }
 
     /**
@@ -95,20 +111,32 @@ class CategoryController extends Controller
      * @param  int  $category
      * @return \Illuminate\Http\Response
      */
-    public function update(Request $request, Category $category)
+    public function update(UpdateCategoryRequest $request, Category $category)
     {
-        $validated = $request->only(['title', 'description']);
+        // $validated = $request->only(['title', 'description']);
 
-        // $category->title = $request->title;
-        // $category->description = $request->description;
-        // $category->save();
+        // // $category->title = $request->title;
+        // // $category->description = $request->description;
+        // // $category->save();
+
+        // $category = $category->fill($validated);
+        // if ($category->save()) {
+        //     return redirect()->route('admin.categories.index')
+        //         ->with('success', 'Запись успешно обновлена');
+        // }
+        // return back()->with('error', 'Ошибка обновления');
+
+        $validated = $request->validated();
 
         $category = $category->fill($validated);
+
         if ($category->save()) {
             return redirect()->route('admin.categories.index')
-                ->with('success', 'Запись успешно обновлена');
+                // ->with('success', 'Запись успешно обновлена');
+                ->with('success', __('message.admin.category.create.success')); // Хелпер trans можно заменить __
         }
-        return back()->with('error', 'Ошибка обновления');
+        // return back()->with('error', 'Ошибка обновления');
+        return back()->with('error', __('message.admin.category.create.fail'));
     }
 
     /**
@@ -119,6 +147,13 @@ class CategoryController extends Controller
      */
     public function destroy(Category $category)
     {
-        //
+        try {
+            $category->delete();
+            return response()->json('ok');
+        } catch (\Exception $e) {
+            \Log::error($e->getMessage());
+
+            return response()->json('error', 400);
+        }
     }
 }

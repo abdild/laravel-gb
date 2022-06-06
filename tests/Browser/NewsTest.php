@@ -2,6 +2,7 @@
 
 namespace Tests\Browser;
 
+use App\Models\News;
 use Illuminate\Foundation\Testing\DatabaseMigrations;
 use Laravel\Dusk\Browser;
 use Tests\DuskTestCase;
@@ -13,11 +14,19 @@ class NewsTest extends DuskTestCase
      *
      * @return void
      */
-    public function testExample()
+    public function testCreateNewsForm()
     {
-        $this->browse(function (Browser $browser) {
-            $browser->visit('/')
-                    ->assertSee('Laravel');
-        });
+		$news = News::factory()->create();
+
+		$this->browse(function (Browser $browser) use($news) {
+			$browser->visit('/')
+				->select('category_id', $news->category_d)
+				->type('title', $news->title)
+				->type('author', $news->author)
+				->type('status', $news->status)
+				->type('description', $news->description)
+				->press('Сохранить')
+				->assertRouteIs('admin.news.store');
+		});
     }
 }
