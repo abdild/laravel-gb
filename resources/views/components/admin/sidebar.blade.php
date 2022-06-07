@@ -20,8 +20,14 @@
                 </a>
             </li>
             <li class="nav-item">
-                <a class="nav-link" href="#">
+                <a class="nav-link @if (request()->routeIs('admin.updateProfile*')) active @endif" href="{{ route('admin.updateProfile') }}">
                     <span data-feather="users"></span>
+                    Пользователи
+                </a>
+            </li>
+            <li class="nav-item">
+                <a class="nav-link" href="#">
+                    <span data-feather="download"></span>
                     Загрузки
                 </a>
             </li>

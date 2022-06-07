@@ -126,6 +126,17 @@ Route::group(['middleware' => 'auth'], function () {
     // 'as' => 'admin.' - добавляет для данной группировки уникальность нейминга. Чтобы , например, не путалось с news.show, будет admin.news.show
     // Проверка всех имен: 'php artisan route:list'
     Route::group(['middleware' => 'admin', 'prefix' => 'admin', 'as' => 'admin.'], function () { // 'middleware' => 'admin' - admin - это имя, которое прописано в файле Http/Kernel.php в блоке protected $routeMiddleware
+        // Урок 9
+        Route::match(
+            ['post', 'get'],
+            '/profile',
+            [
+                'uses' => 'ProfileController@update',
+                'as' => 'updateProfile'
+            ]
+        );
+
+        // ------ Предыдущие уроки
         Route::get('/', AdminController::class)
             ->name('index');
         Route::resource('/categories', AdminCategoryController::class);
