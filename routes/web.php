@@ -1,14 +1,17 @@
 <?php
 
-use Illuminate\Support\Facades\Route;
-use App\Http\Controllers\NewsController as NewsController;
+use App\Http\Controllers\Account\IndexController as AccountIndexController;
+use App\Http\Controllers\Order;
+use App\Http\Controllers\Feedback;
 
-use App\Http\Controllers\Admin\CategoryController as AdminCategoryController;
+use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\Route;
+use App\Http\Controllers\HomeController;
+use App\Http\Controllers\NewsController as NewsController;
+use App\Http\Controllers\IndexController as IndexController;
 use App\Http\Controllers\Admin\IndexController as AdminController;
 use App\Http\Controllers\Admin\NewsController as AdminNewsController;
-use App\Http\Controllers\Feedback;
-use App\Http\Controllers\IndexController as IndexController;
-use App\Http\Controllers\Order;
+use App\Http\Controllers\Admin\CategoryController as AdminCategoryController;
 
 /*
 |--------------------------------------------------------------------------
@@ -113,17 +116,23 @@ Route::get('news/add', function () {
     return view('news/add');
 });
 
-
-// Группировка роутов для админской панели
-// 'prefix' => 'admin' - добавляет префикс 'admin' в браузерной строке
-// 'as' => 'admin.' - добавляет для данной группировки уникальность нейминга. Чтобы , например, не путалось с news.show, будет admin.news.show
-// Проверка всех имен: 'php artisan route:list'
-Route::group(['prefix' => 'admin', 'as' => 'admin.'], function () {
-    Route::get('/', AdminController::class)
-        ->name('index');
-    Route::resource('/categories', AdminCategoryController::class);
-    Route::resource('/news', AdminNewsController::class);
+// Урок 8
+Route::group(['middleware' => 'auth'], function () {
+    // Урок 8
+    Route::get('/account', AccountIndexController::class)
+        ->name('account');
+    // Группировка роутов для админской панели
+    // 'prefix' => 'admin' - добавляет префикс 'admin' в браузерной строке
+    // 'as' => 'admin.' - добавляет для данной группировки уникальность нейминга. Чтобы , например, не путалось с news.show, будет admin.news.show
+    // Проверка всех имен: 'php artisan route:list'
+    Route::group(['middleware' => 'admin', 'prefix' => 'admin', 'as' => 'admin.'], function () { // 'middleware' => 'admin' - admin - это имя, которое прописано в файле Http/Kernel.php в блоке protected $routeMiddleware
+        Route::get('/', AdminController::class)
+            ->name('index');
+        Route::resource('/categories', AdminCategoryController::class);
+        Route::resource('/news', AdminNewsController::class);
+    });
 });
+
 
 Route::get('/', IndexController::class)
     ->name('index');
@@ -143,3 +152,19 @@ Route::get('/news', [NewsController::class, 'index'])
 Route::get('/news/{id}', [NewsController::class, 'show'])
     ->where('id', '\d+')
     ->name('news.show');
+
+// Урок 8 Сессии
+Route::get('/sessions', function () {
+    session()->put('test', "Test data"); // вариант 1
+    // session(['test' => 'Test data']); // вариант 2
+
+    if (session()->has('test')) {
+        dd(session()->all()); // Показать все Сессии
+        dd(session()->get('test')); // Показать конкретную сессию
+        dd(session()->remove('test')); // Удалить конкретную сессию
+    }
+});
+
+Auth::routes();
+
+Route::get('/home', [App\Http\Controllers\HomeController::class, 'index'])->name('home');
