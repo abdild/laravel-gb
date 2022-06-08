@@ -1,16 +1,17 @@
 <?php
 
-use App\Http\Controllers\Account\IndexController as AccountIndexController;
 use App\Http\Controllers\Order;
 use App\Http\Controllers\Feedback;
-
 use Illuminate\Support\Facades\Auth;
+
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\HomeController;
+use App\Http\Controllers\Admin\ParserController;
 use App\Http\Controllers\NewsController as NewsController;
 use App\Http\Controllers\IndexController as IndexController;
 use App\Http\Controllers\Admin\IndexController as AdminController;
 use App\Http\Controllers\Admin\NewsController as AdminNewsController;
+use App\Http\Controllers\Account\IndexController as AccountIndexController;
 use App\Http\Controllers\Admin\CategoryController as AdminCategoryController;
 
 /*
@@ -139,6 +140,8 @@ Route::group(['middleware' => 'auth'], function () {
         // ------ Предыдущие уроки
         Route::get('/', AdminController::class)
             ->name('index');
+        Route::get('/parser', ParserController::class)
+            ->name('parser');
         Route::resource('/categories', AdminCategoryController::class);
         Route::resource('/news', AdminNewsController::class);
     });

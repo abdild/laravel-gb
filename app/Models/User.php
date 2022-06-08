@@ -22,7 +22,16 @@ class User extends Authenticatable
         'last_name',
         'email',
         'password',
+        'avatar',
+        // Урок 9
+        'last_login_at'
     ];
+
+    // Урок 9
+    protected $dates = [
+        'last_login_at'
+    ];
+    // -----
 
     /**
      * The attributes that should be hidden for serialization.
@@ -44,4 +53,8 @@ class User extends Authenticatable
         // Урок 8
         'is_admin' => 'boolean'
     ];
+
+    // Урок 9
+    public $timestamps = false; // Сделали, чтобы при обновлении в БД в таблице user столбца 'last_login_at' столбец 'updated_at' не обновлялся. Обрати внимание, то в миграции для 'last_login_at' делали тип timestamp, а столбцы 'created_at' и 'updated_at' относятся к типу timestamps и именно его мы тут меняем.
+    // -----
 }
