@@ -22,8 +22,8 @@ class User extends Authenticatable
         'last_name',
         'email',
         'password',
-        'avatar',
         // Урок 9
+        'avatar',
         'last_login_at'
     ];
 
@@ -55,6 +55,6 @@ class User extends Authenticatable
     ];
 
     // Урок 9
-    public $timestamps = false; // Сделали, чтобы при обновлении в БД в таблице user столбца 'last_login_at' столбец 'updated_at' не обновлялся. Обрати внимание, то в миграции для 'last_login_at' делали тип timestamp, а столбцы 'created_at' и 'updated_at' относятся к типу timestamps и именно его мы тут меняем.
+    public $timestamps = false; // Сделали, чтобы при обновлении в БД в таблице user столбца 'last_login_at' столбец 'updated_at' не обновлялся. Обрати внимание, что в миграции для 'last_login_at' делали тип timestamp, а столбцы 'created_at' и 'updated_at' относятся к типу timestamps и именно его мы тут меняем.
     // -----
 }

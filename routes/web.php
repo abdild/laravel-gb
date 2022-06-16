@@ -6,6 +6,7 @@ use Illuminate\Support\Facades\Auth;
 
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\HomeController;
+use App\Http\Controllers\SocialController;
 use App\Http\Controllers\Admin\ParserController;
 use App\Http\Controllers\NewsController as NewsController;
 use App\Http\Controllers\IndexController as IndexController;
@@ -127,7 +128,7 @@ Route::group(['middleware' => 'auth'], function () {
     // 'as' => 'admin.' - добавляет для данной группировки уникальность нейминга. Чтобы , например, не путалось с news.show, будет admin.news.show
     // Проверка всех имен: 'php artisan route:list'
     Route::group(['middleware' => 'admin', 'prefix' => 'admin', 'as' => 'admin.'], function () { // 'middleware' => 'admin' - admin - это имя, которое прописано в файле Http/Kernel.php в блоке protected $routeMiddleware
-        // Урок 9
+        // Урок 9 или 8.
         Route::match(
             ['post', 'get'],
             '/profile',
@@ -140,6 +141,7 @@ Route::group(['middleware' => 'auth'], function () {
         // ------ Предыдущие уроки
         Route::get('/', AdminController::class)
             ->name('index');
+        // Урок 9
         Route::get('/parser', ParserController::class)
             ->name('parser');
         Route::resource('/categories', AdminCategoryController::class);
@@ -182,3 +184,12 @@ Route::get('/sessions', function () {
 Auth::routes();
 
 Route::get('/home', [App\Http\Controllers\HomeController::class, 'index'])->name('home');
+
+Route::group(['middleware' => 'guest'], function () {
+    Route::get('/auth/{driver}/redirect', [SocialController::class, 'redirect'])
+        ->where('driver', '\w+')
+        ->name('social.redirect');
+    Route::any('/auth/{driver}/callback', [SocialController::class, 'callback'])
+        ->where('driver', '\w+')
+        ->name('social.callback');
+});
