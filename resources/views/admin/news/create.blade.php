@@ -11,7 +11,7 @@
 
     @include('inc.messages')
 
-    <form method="post" action="{{ route('admin.news.store') }}">
+    <form method="post" action="{{ route('admin.news.store') }}" enctype="multipart/form-data">
         @csrf
 
         <div class="form-group">
@@ -41,14 +41,14 @@
                 @endforeach
             </select>
         </div>
-        <div class="form-group">
+        {{-- <div class="form-group">
             <label for="slug">Slug</label>
             <select class="form-control" name="slug" id="slug">
                 <option @if (old('slug') === 1) selected @endif>1</option>
                 <option @if (old('slug') === 2) selected @endif>2</option>
                 <option @if (old('slug') === 3) selected @endif>3</option>
             </select>
-        </div>
+        </div> --}}
         <div class="form-group">
             <label for="status">Статус</label>
             <select class="form-control" name="status" id="status">

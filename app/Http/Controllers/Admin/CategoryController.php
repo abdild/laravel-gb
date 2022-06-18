@@ -8,8 +8,8 @@ use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Log;
 use App\Http\Controllers\Controller;
 use App\Queries\QueryBuilderCategories;
-use App\Http\Requests\CreateCategoryRequest;
-use App\Http\Requests\UpdateCategoryRequest;
+use App\Http\Requests\News\CreateCategoryRequest;
+use App\Http\Requests\News\UpdateCategoryRequest;
 
 class CategoryController extends Controller
 {

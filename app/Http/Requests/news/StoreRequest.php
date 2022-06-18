@@ -1,10 +1,11 @@
 <?php
+// Такие request нужно делать на каждую форму
 
-namespace App\Http\Requests;
+namespace App\Http\Requests\News;
 
 use Illuminate\Foundation\Http\FormRequest;
 
-class CreateCategoryRequest extends FormRequest
+class StoreRequest extends FormRequest
 {
     /**
      * Determine if the user is authorized to make this request.
@@ -21,14 +22,18 @@ class CreateCategoryRequest extends FormRequest
      *
      * @return array<string, mixed>
      */
-    public function rules()
+    public function rules(): array
     {
         return [
-            'title' => ['required', 'string', 'min:3', 'max:20'],
-            'description' => ['nullable', 'string', 'min:3', 'max:250']
+            'categories_id' => ['required', 'integer', 'min:1', 'exists:categories,id'],
+            'title' => ['required', 'string', 'min:5', 'max:250'],
+            'author' => ['required', 'string', 'min:2', 'max:50'],
+            'image' => ['nullable', 'image', 'mimes:png,jpg,jpeg'],
+            'status' => ['required', 'string', 'min:5', 'max:7'],
+            'description' => ['nullable', 'string'],
+            'only_admin' => ['nullable', 'boolean']
         ];
     }
-
 
     public function messages(): array
     {
@@ -44,7 +49,7 @@ class CreateCategoryRequest extends FormRequest
         // Для локального переопределения
         return [
             'title' => 'Наименование',
-            'description' => 'Описание'
+            'author' => 'Автор'
         ];
     }
 }

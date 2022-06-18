@@ -3,6 +3,7 @@
 namespace App\Services;
 
 use App\Services\Contract\Parser;
+use Illuminate\Support\Facades\Storage;
 use Orchestra\Parser\Xml\Facade as XmlParser;
 
 class ParserService implements Parser
@@ -16,14 +17,16 @@ class ParserService implements Parser
         return $this;
     }
 
-    public function parse(): array
+    public function parse(): void
     {
         // $xml = App\Http\Controllers\Admin\XmlParser::load('https://news.yandex.ru/music.rss');
 
         $xml = XmlParser::load($this->link); // Обрати внимание, почему-то не работает по протоколу https. Возможно потому что из КСПД/
         // $xml = XmlParser::load(public_path('https://news.yandex.ru/music.rss'));
 
-        return $xml->parse([
+        // Урок 10
+        // return $xml->parse([
+        $data = $xml->parse([
             'title' => [
                 'uses' => 'channel.title'
             ],
@@ -43,6 +46,14 @@ class ParserService implements Parser
                 'uses' => 'channel.item[title,link,guid,description,pubDate]'
             ]
         ]);
+
+        // Урок 10
+        $e = explode("/", $this->link);
+        $fileName = end($e);
+
+        $jsonEncode = json_encode($data);
+
+        Storage::append('news/' . $fileName, $jsonEncode);
 
         // dd($news);
 

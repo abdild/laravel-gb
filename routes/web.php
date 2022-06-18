@@ -39,9 +39,9 @@ Route::get('/hello', function () {
 });
 
 // Страница для вывода одной новости
-Route::get('/news/{id}', function (string $id) {
-    return "News page - $id";
-});
+// Route::get('/news/{id}', function (string $id) {
+//     return "News page - $id";
+// });
 
 // Страница для вывода нескольких новостей
 Route::get('/news', function () {
@@ -165,9 +165,11 @@ Route::resource('/order', Order::class);
 // Урок 2
 Route::get('/news', [NewsController::class, 'index'])
     ->name('news');
-Route::get('/news/{id}', [NewsController::class, 'show'])
-    ->where('id', '\d+')
-    ->name('news.show');
+// На уроке 10 сделали роут не через id, а через slug 
+// Route::get('/news/{id}', [NewsController::class, 'show'])
+//     ->where('id', '\d+')
+//     ->name('news.show');
+
 
 // Урок 8 Сессии
 Route::get('/sessions', function () {
@@ -193,3 +195,10 @@ Route::group(['middleware' => 'guest'], function () {
         ->where('driver', '\w+')
         ->name('social.callback');
 });
+
+
+// Урок 10
+// Вывод одной новости
+Route::get('/news/{slug}', [NewsController::class, 'show'])
+    ->where('slug', '[a-zA-Z0-9\-\_]+')
+    ->name('news.show');

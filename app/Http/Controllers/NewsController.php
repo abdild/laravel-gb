@@ -2,35 +2,52 @@
 
 namespace App\Http\Controllers;
 
-use App\Models\News;
+// use App\Models\News;
+use App\Queries\QueryBuilderNews;
 use Illuminate\Http\Request;
 
 class NewsController extends Controller
 {
-    public function index()
+    // Урок 10
+    public function index(QueryBuilderNews $builderNews)
     {
-        $model = app(News::class);
-        $news = $model->getNews();
-        // $news = $this->getNews();
-        // dd($news);
         return view('news.index', [
-            'newsList' => $news
+            'newsList' => $builderNews->getNews()
         ]);
     }
 
-    public function show(int $id)
+    public function show(string $slug, QueryBuilderNews $builderNews)
     {
-        if ($id > 20) {
-            abort(404);
-        };
-
-        $model = app(News::class);
-        $news = $model->getOneNews($id);
-        // $news = $this->getNews($id);
         return view('news.show', [
-            'news' => $news
+            'news' => $builderNews->getNewsBySlug($slug)->first()
         ]);
     }
+    // ----------------
+
+    // public function index()
+    // {
+    //     $model = app(News::class);
+    //     $news = $model->getNews();
+    //     // $news = $this->getNews();
+    //     // dd($news);
+    //     return view('news.index', [
+    //         'newsList' => $news
+    //     ]);
+    // }
+
+    // public function show(int $id)
+    // {
+    //     if ($id > 20) {
+    //         abort(404);
+    //     };
+
+    //     $model = app(News::class);
+    //     $news = $model->getOneNews($id);
+    //     // $news = $this->getNews($id);
+    //     return view('news.show', [
+    //         'news' => $news
+    //     ]);
+    // }
 
     public function categoriesNews()
     {

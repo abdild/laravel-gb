@@ -4,12 +4,13 @@ namespace App\Models;
 
 use Illuminate\Support\Facades\DB;
 use Illuminate\Database\Eloquent\Model;
-use Illuminate\Database\Eloquent\Factories\HasFactory;
+use Cviebrock\EloquentSluggable\Sluggable;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
+use Illuminate\Database\Eloquent\Factories\HasFactory;
 
 class News extends Model
 {
-    use HasFactory;
+    use HasFactory, Sluggable;
 
     protected $table = "news";
 
@@ -61,6 +62,17 @@ class News extends Model
     {
         return $query->where('status', 'BLOCKED');
     }
+
+    // Урок 10
+    public function sluggable(): array
+    {
+        return [
+            'slug' => [
+                'source' => 'title'
+            ]
+        ];
+    }
+    // -----------------
 
     // Создание объекта carbon для работы с датами
     protected $dates = [

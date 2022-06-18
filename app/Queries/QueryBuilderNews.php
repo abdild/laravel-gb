@@ -26,10 +26,18 @@ class QueryBuilderNews implements QueryBuilder
             ->paginate(5);
     }
 
-    public function getNewsById(int $id)
+    // Урок 10
+    public function getNewsBySlug(string $slug): Builder
     {
-        return News::select(['id', 'categories_id', 'title', 'slug', 'author', 'image', 'status', 'description', 'only_admin', 'created_at', 'updated_at'])
-            // ->find($id); // В случае отсутствия такого id выдаст null
-            ->findOrFail($id); // В случае отсутствия такого id выдаст исключение, ошибку
+        return News::where('slug', $slug);
     }
+    // ---------------
+
+    // Это удалили в уроке 10, потому что сделали не через id, а через slug (см. метод выше getNewsBySlug)
+    // public function getNewsById(int $id)
+    // {
+    //     return News::select(['id', 'categories_id', 'title', 'slug', 'author', 'image', 'status', 'description', 'only_admin', 'created_at', 'updated_at'])
+    //         // ->find($id); // В случае отсутствия такого id выдаст null
+    //         ->findOrFail($id); // В случае отсутствия такого id выдаст исключение, ошибку
+    // }
 }

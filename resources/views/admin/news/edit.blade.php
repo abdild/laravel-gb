@@ -11,7 +11,7 @@
 
     @include('inc.messages')
 
-    <form method="post" action="{{ route('admin.news.update', ['news' => $news]) }}">
+    <form method="post" action="{{ route('admin.news.update', ['news' => $news]) }}" enctype="multipart/form-data">
         @csrf
 
         @method('put')
@@ -40,14 +40,14 @@
                 @endforeach
             </select>
         </div>
-        <div class="form-group">
+        {{-- <div class="form-group">
             <label for="slug">Slug</label>
             <select class="form-control" name="slug" id="slug">
                 <option @if ($news->slug === 1) selected @endif>1</option>
                 <option @if ($news->slug === 2) selected @endif>2</option>
                 <option @if ($news->slug === 3) selected @endif>3</option>
             </select>
-        </div>
+        </div> --}}
         <div class="form-group">
             <label for="status">Статус</label>
             <select class="form-control" name="status" id="status">
@@ -58,6 +58,9 @@
         </div>
         <div class="form-group">
             <label for="image">Изображение</label>
+            @if ($news->image)
+                <img src="{{ Storage::url($news->image) }}" style="width: 250px;">
+            @endif
             <input type="file" id="image" name="image" class="form-control">
         </div>
         <div class="form-group">
@@ -68,3 +71,15 @@
         <button type="submit" class="btn btn-success">Сохранить</button>
     </form>
 @endsection
+
+@push('js')
+    <script src="https://cdn.ckeditor.com/ckeditor5/34.1.0/classic/ckeditor.js"></script>
+
+    <script>
+        ClassicEditor
+            .create(document.querySelector('#description'))
+            .catch(error => {
+                console.error(error);
+            });
+    </script>
+@endpush
